@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game - 10 Levels Challenge</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>🐍 Snake Game</h1>
+            <p class="subtitle">10 Difficulty Levels Challenge</p>
+        </header>
+
+        <!-- Welcome Screen - Login or Register -->
+        <div id="welcomeScreen" class="screen">
+            <div class="welcome-content">
+                <h2>Welcome to Snake Game!</h2>
+                <p>Login or create a new account to start playing</p>
+                
+                <!-- Tab buttons -->
+                <div class="auth-tabs">
+                    <button id="loginTab" class="auth-tab active">Login</button>
+                    <button id="registerTab" class="auth-tab">Register</button>
+                </div>
+                
+                <!-- Login Form -->
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="loginUsername">Username:</label>
+                        <input 
+                            type="text" 
+                            id="loginUsername" 
+                            name="username" 
+                            required 
+                            minlength="3" 
+                            maxlength="50"
+                            placeholder="Enter your username"
+                        >
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+                
+                <!-- Register Form -->
+                <form id="registerForm" class="auth-form hidden">
+                    <div class="form-group">
+                        <label for="registerUsername">Username:</label>
+                        <input 
+                            type="text" 
+                            id="registerUsername" 
+                            name="username" 
+                            required 
+                            minlength="3" 
+                            maxlength="50"
+                            placeholder="Choose a username"
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="registerEmail">Email:</label>
+                        <input 
+                            type="email" 
+                            id="registerEmail" 
+                            name="email" 
+                            required
+                            placeholder="your.email@example.com"
+                        >
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                </form>
+                
+                <div id="errorMessage" class="error-message hidden"></div>
+            </div>
+        </div>
+
+        <!-- Level Selection Screen -->
+        <div id="levelScreen" class="screen hidden">
+            <div class="level-content">
+                <h2>Select Difficulty Level</h2>
+                <p class="player-greeting">Hello, <span id="greetingName"></span>!</p>
+                
+                <div id="levelsList" class="levels-grid">
+                    <!-- Levels will be loaded dynamically from API -->
+                </div>
+                
+                <div class="level-actions">
+                    <button id="viewLeaderboardFromLevels" class="btn btn-secondary">View Leaderboard</button>
+                    <button id="logoutBtn" class="btn btn-danger">Logout</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="screen hidden">
+            <!-- Game Info Bar -->
+            <div class="game-info">
+                <div class="info-item">
+                    <span class="label">Player:</span>
+                    <span id="playerName" class="value">-</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Level:</span>
+                    <span id="currentLevel" class="value">1</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Score:</span>
+                    <span id="score" class="value">0</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Food Eaten:</span>
+                    <span id="foodCount" class="value">0</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Time:</span>
+                    <span id="timer" class="value">0s</span>
+                </div>
+            </div>
+
+            <!-- Game Container with Canvas -->
+            <div class="game-canvas-wrapper">
+                <canvas id="gameCanvas"></canvas>
+                <div id="startMessage" class="start-message">
+                    Press any arrow key to start!
+                </div>
+            </div>
+
+            <!-- Game Controls -->
+            <div class="game-controls">
+                <button id="pauseBtn" class="btn btn-secondary">Pause</button>
+                <button id="resumeBtn" class="btn btn-secondary hidden">Resume</button>
+                <button id="quitBtn" class="btn btn-danger">Quit</button>
+            </div>
+
+            <!-- Instructions -->
+            <div class="instructions">
+                <h3>Controls:</h3>
+                <p>Use <strong>Arrow Keys</strong> to move the snake</p>
+                <p>Press <strong>Space</strong> to pause/resume</p>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="gameOverScreen" class="screen hidden">
+            <div class="game-over-content">
+                <h2 id="gameOverTitle">Game Over!</h2>
+                <div class="final-stats">
+                    <p>Final Score: <strong id="finalScore">0</strong></p>
+                    <p>Food Eaten: <strong id="finalFood">0</strong></p>
+                    <p>Time Played: <strong id="finalTime">0s</strong></p>
+                    <p id="completionMessage" class="completion-message hidden"></p>
+                </div>
+                <div class="game-over-actions">
+                    <button id="playAgainBtn" class="btn btn-primary">Play Again</button>
+                    <button id="changeLevelBtn" class="btn btn-secondary">Change Level</button>
+                    <button id="viewLeaderboardBtn" class="btn btn-success">View Leaderboard</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leaderboard Screen -->
+        <div id="leaderboardScreen" class="screen hidden">
+            <div class="leaderboard-content">
+                <h2>🏆 Leaderboard - Top 10 Players</h2>
+                
+                <div id="leaderboardTable" class="leaderboard-table">
+                    <!-- Leaderboard will be loaded dynamically from API -->
+                </div>
+                
+                <button id="backToLevelsBtn" class="btn btn-secondary">Back to Levels</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner hidden">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="game.js"></script>
+</body>
+</html>

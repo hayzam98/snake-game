@@ -1,0 +1,588 @@
+/* ========== Global Styles ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    max-width: 900px;
+    width: 100%;
+    padding: 30px;
+}
+
+/* ========== Header ========== */
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 2.5em;
+    color: #667eea;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 1.1em;
+}
+
+/* ========== Screens ========== */
+.screen {
+    display: block;
+    animation: fadeIn 0.5s ease-in;
+}
+
+.screen.hidden {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========== Welcome Screen ========== */
+.welcome-content {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.welcome-content h2 {
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.welcome-content p {
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* ========== Forms ========== */
+.player-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.form-group input {
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+/* ========== Buttons ========== */
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: #667eea;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #5568d3;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+}
+
+.btn-success {
+    background: #28a745;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #218838;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+}
+
+/* ========== Error Message ========== */
+.error-message {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 15px;
+    border: 1px solid #f5c6cb;
+}
+
+/* ========== Level Selection ========== */
+.level-content {
+    text-align: center;
+}
+
+.level-content h2 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.player-greeting {
+    color: #667eea;
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+.levels-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.level-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 3px solid transparent;
+}
+
+.level-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    border-color: #ffd700;
+}
+
+.level-card h3 {
+    font-size: 1.5em;
+    margin-bottom: 5px;
+}
+
+.level-card .level-name {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+}
+
+.level-card .level-details {
+    font-size: 0.85em;
+    opacity: 0.9;
+}
+
+/* ========== Game Screen ========== */
+.game-info {
+    display: flex;
+    justify-content: space-around;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.info-item {
+    text-align: center;
+}
+
+.info-item .label {
+    display: block;
+    font-size: 0.85em;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.info-item .value {
+    display: block;
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #667eea;
+}
+
+/* ========== Game Canvas ========== */
+.game-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#gameCanvas {
+    border: 3px solid #667eea;
+    border-radius: 10px;
+    background: #000;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* ========== Game Controls ========== */
+.game-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* ========== Instructions ========== */
+.instructions {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.instructions h3 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.instructions p {
+    color: #666;
+    margin-bottom: 5px;
+}
+
+/* ========== Game Over Screen ========== */
+.game-over-content {
+    text-align: center;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.game-over-content h2 {
+    color: #dc3545;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.final-stats {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.final-stats p {
+    font-size: 1.2em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.final-stats strong {
+    color: #667eea;
+}
+
+.completion-message {
+    color: #28a745;
+    font-weight: bold;
+    font-size: 1.3em !important;
+}
+
+.game-over-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* ========== Leaderboard ========== */
+.leaderboard-content {
+    text-align: center;
+}
+
+.leaderboard-content h2 {
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.leaderboard-table {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.leaderboard-header {
+    display: grid;
+    grid-template-columns: 60px 1fr 120px 120px 120px;
+    gap: 15px;
+    padding: 10px 15px;
+    font-weight: bold;
+    color: #667eea;
+    border-bottom: 2px solid #667eea;
+    margin-bottom: 15px;
+}
+
+.leaderboard-entry {
+    display: grid;
+    grid-template-columns: 60px 1fr 120px 120px 120px;
+    gap: 15px;
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.leaderboard-entry.rank-1 {
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    font-weight: bold;
+}
+
+.leaderboard-entry.rank-2 {
+    background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
+}
+
+.leaderboard-entry.rank-3 {
+    background: linear-gradient(135deg, #cd7f32 0%, #e6a96a 100%);
+}
+
+.leaderboard-rank {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #667eea;
+}
+
+.leaderboard-username {
+    text-align: left;
+    font-weight: bold;
+    color: #333;
+}
+
+.leaderboard-stat {
+    text-align: center;
+    color: #666;
+}
+
+/* ========== Loading Spinner ========== */
+.loading-spinner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loading-spinner.hidden {
+    display: none;
+}
+
+.spinner {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #667eea;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-spinner p {
+    color: white;
+    font-size: 1.2em;
+    margin-top: 20px;
+}
+
+/* ========== Responsive Design ========== */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+    
+    header h1 {
+        font-size: 2em;
+    }
+    
+    .levels-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+    
+    .game-info {
+        flex-direction: column;
+    }
+    
+    .leaderboard-header,
+    .leaderboard-entry {
+        grid-template-columns: 50px 1fr 80px 80px 80px;
+        font-size: 0.9em;
+    }
+}
+
+/* ========== Auth Tabs ========== */
+.auth-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.auth-tab {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #667eea;
+    background: white;
+    color: #667eea;
+    border-radius: 8px 8px 0 0;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.auth-tab.active {
+    background: #667eea;
+    color: white;
+}
+
+.auth-tab:hover:not(.active) {
+    background: #f0f0f0;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.auth-form.hidden {
+    display: none;
+}
+
+/* ========== Level Actions ========== */
+.level-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* ========== Game Canvas Wrapper ========== */
+.game-canvas-wrapper {
+    position: relative;
+    display: inline-block;
+    margin: 0 auto;
+}
+
+.start-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px 40px;
+    border-radius: 10px;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    pointer-events: none;
+    animation: pulse 2s infinite;
+}
+
+.start-message.hidden {
+    display: none;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* ========== Canvas Size Adjustments ========== */
+#gameCanvas {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Ajustar tamaño del canvas según el grid */
+.game-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    max-height: 70vh;
+    overflow: hidden;
+}
+
+/* ========== Responsive Canvas ========== */
+@media (max-width: 768px) {
+    .game-canvas-wrapper {
+        width: 100%;
+    }
+    
+    #gameCanvas {
+        width: 100% !important;
+        height: auto !important;
+    }
+    
+    .start-message {
+        font-size: 1.2em;
+        padding: 15px 30px;
+    }
+}
