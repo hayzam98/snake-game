@@ -10,6 +10,7 @@ cryptography==44.0.0
 # Validation
 pydantic==2.10.4
 pydantic-settings==2.7.1
+pydantic[email]>=2.0.0
 
 # Utilities
 python-multipart==0.0.20
