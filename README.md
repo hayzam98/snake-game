@@ -4,6 +4,7 @@
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115.0-009688.svg)](https://fastapi.tiangolo.com)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0+-4479A1.svg)](https://www.mysql.com/)
+[![CI/CD Pipeline](https://github.com/hayzam98/snake-game-portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/hayzam98/snake-game-portfolio/actions/workflows/ci.yml)
 
 > Un juego de la serpiente clásico con 10 niveles de dificultad progresiva, backend FastAPI, base de datos MySQL y frontend vanilla JavaScript.
 
