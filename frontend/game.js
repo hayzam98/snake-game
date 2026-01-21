@@ -422,7 +422,7 @@ async function loadLeaderboard() {
 
 /**
  * Initialize game
- * IMPROVEMENT: Canvas size adapts to screen
+ * IMPROVEMENT: Canvas size adapts to screen - BIGGER and CENTERED
  */
 function initGame() {
     canvas = document.getElementById('gameCanvas');
@@ -431,8 +431,11 @@ function initGame() {
     gridSize = selectedLevel.grid_size;
     
     // Calculate optimal cell size to fit screen
-    // Maximum canvas dimension: 600px or 60% of viewport height
-    const maxCanvasSize = Math.min(600, window.innerHeight * 0.6);
+    // IMPROVEMENT: Use 80% of viewport width and 75% of viewport height for larger canvas
+    const maxWidth = Math.min(window.innerWidth * 0.8, 800);  // Max 800px or 80% width
+    const maxHeight = Math.min(window.innerHeight * 0.75, 800);  // Max 800px or 75% height
+    const maxCanvasSize = Math.min(maxWidth, maxHeight);
+    
     cellSize = Math.floor(maxCanvasSize / gridSize);
     
     // Set canvas size
@@ -454,7 +457,7 @@ function initGame() {
     score = 0;
     foodEaten = 0;
     gameTime = 0;
-    gameStarted = false;  // IMPROVEMENT: Game hasn't started yet
+    gameStarted = false;
     
     generateFood();
     generateObstacles();
@@ -470,7 +473,7 @@ function initGame() {
     document.getElementById('pauseBtn').classList.remove('hidden');
     document.getElementById('resumeBtn').classList.add('hidden');
     
-    // IMPROVEMENT: Show start message
+    // Show start message
     document.getElementById('startMessage').classList.remove('hidden');
     
     // Draw initial state

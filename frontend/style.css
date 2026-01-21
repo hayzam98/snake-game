@@ -255,17 +255,81 @@ header h1 {
 }
 
 /* ========== Game Canvas ========== */
+.game-canvas-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
 .game-container {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-bottom: 20px;
+    width: 100%;
 }
 
 #gameCanvas {
-    border: 3px solid #667eea;
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+}
+
+.start-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px 40px;
     border-radius: 10px;
-    background: #000;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    pointer-events: none;
+    animation: pulse 2s infinite;
+    z-index: 10;
+}
+
+.start-message.hidden {
+    display: none;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* ========== Responsive Canvas ========== */
+@media (max-width: 768px) {
+    .game-canvas-wrapper {
+        width: 100%;
+    }
+    
+    #gameCanvas {
+        width: 100% !important;
+        height: auto !important;
+    }
+    
+    .start-message {
+        font-size: 1.2em;
+        padding: 15px 30px;
+    }
+}
+
+@media (min-width: 769px) {
+    #gameCanvas {
+        max-width: 90vw;
+        max-height: 75vh;
+    }
 }
 
 /* ========== Game Controls ========== */
