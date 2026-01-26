@@ -422,30 +422,75 @@ async function loadLeaderboard() {
 
 /**
  * Initialize game
- * IMPROVEMENT: Canvas size adapts to screen - BIGGER and CENTERED
+ * IMPROVEMENT: Rectangular grid that uses entire canvas area
+ * Grid columns (X) and rows (Y) calculated independently
  */
 function initGame() {
     canvas = document.getElementById('gameCanvas');
     ctx = canvas.getContext('2d');
     
-    gridSize = selectedLevel.grid_size;
+    // Get container width (full width of container minus padding)
+    const container = document.querySelector('.container');
+    const containerStyle = window.getComputedStyle(container);
+    const containerPadding = parseFloat(containerStyle.paddingLeft) + parseFloat(containerStyle.paddingRight);
+    const containerWidth = container.clientWidth - containerPadding;
     
-    // Calculate optimal cell size to fit screen
-    // IMPROVEMENT: Use 80% of viewport width and 75% of viewport height for larger canvas
-    const maxWidth = Math.min(window.innerWidth * 0.8, 800);  // Max 800px or 80% width
-    const maxHeight = Math.min(window.innerHeight * 0.75, 800);  // Max 800px or 75% height
-    const maxCanvasSize = Math.min(maxWidth, maxHeight);
+    // Calculate available height for canvas
+    const viewportHeight = window.innerHeight;
+    const reservedHeight = 350; // Space for UI elements
+    const availableHeight = viewportHeight - reservedHeight;
     
-    cellSize = Math.floor(maxCanvasSize / gridSize);
+    // Define desired cell size (SQUARE cells)
+    const desiredCellSize = 20; // Adjust this for bigger/smaller cells
+    
+    // Calculate grid dimensions based on canvas area
+    // Grid columns (X-axis): based on container width
+    const gridCols = Math.floor(containerWidth / desiredCellSize);
+    
+    // Grid rows (Y-axis): based on available height
+    const gridRows = Math.floor(availableHeight / desiredCellSize);
+    
+    // Calculate actual cell size to fit exactly
+    const cellWidth = Math.floor(containerWidth / gridCols);
+    const cellHeight = Math.floor(availableHeight / gridRows);
+    
+    // Use the smaller to keep cells SQUARE
+    cellSize = Math.min(cellWidth, cellHeight);
+    
+    // Ensure minimum cell size
+    cellSize = Math.max(cellSize, 15);
+    
+    // Final grid dimensions
+    const finalGridCols = Math.floor(containerWidth / cellSize);
+    const finalGridRows = Math.floor(availableHeight / cellSize);
     
     // Set canvas size
-    const canvasSize = gridSize * cellSize;
-    canvas.width = canvasSize;
-    canvas.height = canvasSize;
+    const canvasWidth = finalGridCols * cellSize;
+    const canvasHeight = finalGridRows * cellSize;
     
-    // Initialize snake in the center
-    const centerX = Math.floor(gridSize / 2);
-    const centerY = Math.floor(gridSize / 2);
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+    
+    // Store grid dimensions globally
+    window.gridCols = finalGridCols; // X-axis (horizontal)
+    window.gridRows = finalGridRows; // Y-axis (vertical)
+    
+    // Update obstacles count based on rectangular grid
+    const totalCells = finalGridCols * finalGridRows;
+    const obstacleRatio = selectedLevel.obstacles_count / (selectedLevel.grid_size * selectedLevel.grid_size);
+    const adjustedObstaclesCount = Math.floor(totalCells * obstacleRatio);
+    
+    // Log canvas info for debugging
+    console.log(`Canvas: ${canvasWidth}x${canvasHeight}px`);
+    console.log(`Cell: ${cellSize}x${cellSize}px (SQUARE)`);
+    console.log(`Grid: ${finalGridCols} cols × ${finalGridRows} rows`);
+    console.log(`Total cells: ${totalCells}`);
+    console.log(`Obstacles: ${adjustedObstaclesCount}`);
+    console.log(`Canvas Aspect Ratio: ${(canvasWidth/canvasHeight).toFixed(2)}:1`);
+    
+    // Initialize snake in the center of RECTANGULAR grid
+    const centerX = Math.floor(finalGridCols / 2);
+    const centerY = Math.floor(finalGridRows / 2);
     snake = [
         { x: centerX, y: centerY },
         { x: centerX - 1, y: centerY },
@@ -458,6 +503,9 @@ function initGame() {
     foodEaten = 0;
     gameTime = 0;
     gameStarted = false;
+    
+    // Store adjusted obstacles count
+    window.adjustedObstaclesCount = adjustedObstaclesCount;
     
     generateFood();
     generateObstacles();
@@ -478,18 +526,25 @@ function initGame() {
     
     // Draw initial state
     draw();
+    
+    // Scroll to top to ensure canvas is visible
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 /**
  * Generate food at random position
+ * UPDATED: Uses rectangular grid (gridCols × gridRows)
  */
 function generateFood() {
+    const gridCols = window.gridCols;
+    const gridRows = window.gridRows;
+    
     let validPosition = false;
     
     while (!validPosition) {
         food = {
-            x: Math.floor(Math.random() * gridSize),
-            y: Math.floor(Math.random() * gridSize)
+            x: Math.floor(Math.random() * gridCols),
+            y: Math.floor(Math.random() * gridRows)
         };
         
         validPosition = !isPositionOccupied(food.x, food.y);
@@ -517,10 +572,13 @@ function isPositionOccupied(x, y) {
 
 /**
  * Generate obstacles based on level
+ * UPDATED: Uses rectangular grid and adjusted count
  */
 function generateObstacles() {
     obstacles = [];
-    const count = selectedLevel.obstacles_count;
+    const gridCols = window.gridCols;
+    const gridRows = window.gridRows;
+    const count = window.adjustedObstaclesCount || selectedLevel.obstacles_count;
     
     for (let i = 0; i < count; i++) {
         let validPosition = false;
@@ -528,8 +586,8 @@ function generateObstacles() {
         
         while (!validPosition) {
             obstacle = {
-                x: Math.floor(Math.random() * gridSize),
-                y: Math.floor(Math.random() * gridSize)
+                x: Math.floor(Math.random() * gridCols),
+                y: Math.floor(Math.random() * gridRows)
             };
             
             validPosition = !isPositionOccupied(obstacle.x, obstacle.y) &&
@@ -545,7 +603,7 @@ function generateObstacles() {
  * IMPROVEMENT: Only starts when arrow key is pressed
  */
 function startGame() {
-    if (gameStarted) return;  // Prevent multiple starts
+    if (gameStarted) return;
     
     gameStarted = true;
     document.getElementById('startMessage').classList.add('hidden');
@@ -585,8 +643,11 @@ function gameLoop() {
             break;
     }
     
-    // Check collision with walls
-    if (head.x < 0 || head.x >= gridSize || head.y < 0 || head.y >= gridSize) {
+    // Check collision with walls - UPDATED for rectangular grid
+    const gridCols = window.gridCols;
+    const gridRows = window.gridRows;
+    
+    if (head.x < 0 || head.x >= gridCols || head.y < 0 || head.y >= gridRows) {
         gameOver(false);
         return;
     }
@@ -625,11 +686,35 @@ function gameLoop() {
 
 /**
  * Draw game on canvas
+ * UPDATED: Draws with rectangular grid
  */
 function draw() {
+    const gridCols = window.gridCols;
+    const gridRows = window.gridRows;
+    
     // Clear canvas
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw grid lines (optional)
+    ctx.strokeStyle = '#111';
+    ctx.lineWidth = 1;
+    
+    // Vertical lines
+    for (let x = 0; x <= gridCols; x++) {
+        ctx.beginPath();
+        ctx.moveTo(x * cellSize, 0);
+        ctx.lineTo(x * cellSize, canvas.height);
+        ctx.stroke();
+    }
+    
+    // Horizontal lines
+    for (let y = 0; y <= gridRows; y++) {
+        ctx.beginPath();
+        ctx.moveTo(0, y * cellSize);
+        ctx.lineTo(canvas.width, y * cellSize);
+        ctx.stroke();
+    }
     
     // Draw snake
     snake.forEach((segment, index) => {
