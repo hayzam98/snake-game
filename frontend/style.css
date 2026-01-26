@@ -19,8 +19,8 @@ body {
     background: white;
     border-radius: 20px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    max-width: 900px;
-    width: 100%;
+    max-width: 1400px;
+    width: 95%;
     padding: 30px;
 }
 
@@ -231,7 +231,7 @@ header h1 {
     background: #f8f9fa;
     padding: 15px;
     border-radius: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     flex-wrap: wrap;
     gap: 10px;
 }
@@ -254,27 +254,29 @@ header h1 {
     color: #667eea;
 }
 
-/* ========== Game Canvas ========== */
+/* ========== Game Canvas - FULL WIDTH ========== */
 .game-canvas-wrapper {
     position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
+    display: block;
+    width: 100%;
+    margin: 0 auto 15px auto;
 }
 
 .game-container {
     display: flex;
     justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     width: 100%;
 }
 
 #gameCanvas {
     display: block;
     margin: 0 auto;
-    max-width: 100%;
+    border: 3px solid #667eea;
+    border-radius: 10px;
+    background: #000;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    width: 100%;
     height: auto;
 }
 
@@ -308,36 +310,12 @@ header h1 {
     }
 }
 
-/* ========== Responsive Canvas ========== */
-@media (max-width: 768px) {
-    .game-canvas-wrapper {
-        width: 100%;
-    }
-    
-    #gameCanvas {
-        width: 100% !important;
-        height: auto !important;
-    }
-    
-    .start-message {
-        font-size: 1.2em;
-        padding: 15px 30px;
-    }
-}
-
-@media (min-width: 769px) {
-    #gameCanvas {
-        max-width: 90vw;
-        max-height: 75vh;
-    }
-}
-
 /* ========== Game Controls ========== */
 .game-controls {
     display: flex;
     justify-content: center;
     gap: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 /* ========== Instructions ========== */
@@ -356,6 +334,18 @@ header h1 {
 .instructions p {
     color: #666;
     margin-bottom: 5px;
+}
+
+/* ========== Responsive Design ========== */
+@media (max-width: 768px) {
+    .start-message {
+        font-size: 1.2em;
+        padding: 15px 30px;
+    }
+    
+    .game-info {
+        font-size: 0.9em;
+    }
 }
 
 /* ========== Game Over Screen ========== */
